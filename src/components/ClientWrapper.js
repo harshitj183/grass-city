@@ -3,48 +3,120 @@
 import { useState, useEffect } from 'react';
 import CountryPopup from './CountryPopup';
 
-export default function ClientWrapper() {
-  const [state, setState] = useState({
-    isOpen: false,
-    userCountry: '',
-    isMounted: false
-  });
+// Map of language codes to country names
+const COUNTRY_MAPPING = {
+  'en-GB': 'United Kingdom',
+  'en-CA': 'Canada',
+  'en-AU': 'Australia',
+  'en-NZ': 'New Zealand',
+  'fr': 'France',
+  'fr-CA': 'Canada',
+  'de': 'Germany',
+  'es': 'Spain',
+  'it': 'Italy',
+  'nl': 'Netherlands',
+  'pt': 'Portugal',
+  'ru': 'Russia',
+  'ja': 'Japan',
+  'ko': 'South Korea',
+  'zh': 'China',
+  'hi': 'India'
+};
+
+function useCountryPopup() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [userCountry, setUserCountry] = useState('');
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    const init = async () => {
-      const hasSeenPopup = localStorage.getItem('hasSeenPopup');
-      
-      if (!hasSeenPopup) {
-        try {
-          const response = await fetch('https://ipapi.co/json/');
-          const data = await response.json();
-          setState({
-            isOpen: true,
-            userCountry: data.country_name,
-            isMounted: true
-          });
-        } catch (error) {
-          console.error('Error fetching country:', error);
-          setState(prev => ({ ...prev, isMounted: true }));
-        }
-      } else {
-        setState(prev => ({ ...prev, isMounted: true }));
+    let isMounted = true;
+
+    const checkStorage = () => {
+      try {
+        return window?.localStorage?.getItem('hasSeenPopup') || false;
+      } catch (e) {
+        return false;
       }
     };
 
-    init();
+    const detectCountry = () => {
+      try {
+        const language = window.navigator.language;
+        const languages = window.navigator.languages || [language];
+        
+        // Try to find a matching country from the user's language preferences
+        for (const lang of languages) {
+          const country = COUNTRY_MAPPING[lang] || COUNTRY_MAPPING[lang.split('-')[0]];
+          if (country) return country;
+        }
+        
+        // Default to a generic "International" if no match found
+        return 'your country';
+      } catch (e) {
+        return 'your country';
+      }
+    };
+
+    const initialize = () => {
+      if (typeof window === 'undefined') return;
+
+      try {
+        const hasSeenPopup = checkStorage();
+        if (hasSeenPopup) {
+          if (isMounted) setInitialized(true);
+          return;
+        }
+
+        const detectedCountry = detectCountry();
+        
+        if (!isMounted) return;
+
+        // Don't show for US users
+        if (detectedCountry && detectedCountry !== 'United States') {
+          setUserCountry(detectedCountry);
+          setIsOpen(true);
+        }
+      } catch (error) {
+        console.error('Initialization error:', error);
+      } finally {
+        if (isMounted) {
+          setInitialized(true);
+        }
+      }
+    };
+
+    initialize();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem('hasSeenPopup', 'true');
-    setState(prev => ({ ...prev, isOpen: false }));
+    try {
+      window?.localStorage?.setItem('hasSeenPopup', 'true');
+    } catch (e) {
+      // Silently fail if localStorage is not available
+    }
+    setIsOpen(false);
   };
 
-  if (!state.isMounted) return null;
+  return {
+    isOpen,
+    userCountry,
+    initialized,
+    handleClose
+  };
+}
 
-  return state.isOpen ? (
+export default function ClientWrapper() {
+  const { isOpen, userCountry, initialized, handleClose } = useCountryPopup();
+
+  if (!initialized) return null;
+
+  return isOpen ? (
     <CountryPopup
-      userCountry={state.userCountry}
+      userCountry={userCountry}
       onClose={handleClose}
     />
   ) : null;

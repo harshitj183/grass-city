@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import "./globals.css";
-import ClientWrapper from '@/components/ClientWrapper';
+import PopupProvider from '@/components/PopupProvider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <ClientWrapper />
+        <PopupProvider />
       </body>
     </html>
   );

@@ -2,15 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import dynamic from 'next/dynamic';
+import Header from "@/component/Header.js";
 import Mainfooter from "@/component/Mainfooter.js";
 import ProductList from '@/component/ProductList.js';
 import FilterSidebar from '@/component/FilterSidebar.js';
 import { Pagination } from '@/components/ui/pagination';
-
-const Header = dynamic(() => import('@/component/Header.js'), {
-  ssr: false
-});
 
 // Complete menuItems array with all categories and their submenus
 const menuItems = [

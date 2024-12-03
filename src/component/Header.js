@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -13,111 +13,111 @@ import {
   Mic,
 } from "lucide-react";
 
-const Header = () => {
+const menuItems = [
+  { 
+    name: "Bongs", 
+    href: "/category/bongs",
+    subItems: [
+      { name: "Glass Bongs", href: "/category/bongs?type=glass" },
+      { name: "Acrylic Bongs", href: "/category/bongs?type=acrylic" },
+      { name: "Mini Bongs", href: "/category/bongs?type=mini" },
+      { name: "Beaker Base Bongs", href: "/category/bongs?type=beaker" },
+      { name: "Straight Tube Bongs", href: "/category/bongs?type=straight" },
+      { name: "Recycler Bongs", href: "/category/bongs?type=recycler" }
+    ] 
+  },
+  { 
+    name: "Dab Rigs", 
+    href: "/category/dab-rigs",
+    subItems: [
+      { name: "Electric Dab Rigs", href: "/category/dab-rigs?type=electric" },
+      { name: "Mini Dab Rigs", href: "/category/dab-rigs?type=mini" },
+      { name: "Recycler Dab Rigs", href: "/category/dab-rigs?type=recycler" },
+      { name: "Scientific Dab Rigs", href: "/category/dab-rigs?type=scientific" },
+      { name: "Dab Tools", href: "/category/dab-rigs?type=tools" }
+    ] 
+  },
+  { 
+    name: "Vaporizers", 
+    href: "/category/vaporizers",
+    subItems: [
+      { name: "Dry Herb Vaporizers", href: "/category/vaporizers?type=dry-herb" },
+      { name: "Wax Vaporizers", href: "/category/vaporizers?type=wax" },
+      { name: "Desktop Vaporizers", href: "/category/vaporizers?type=desktop" },
+      { name: "Portable Vaporizers", href: "/category/vaporizers?type=portable" },
+      { name: "Vaporizer Parts", href: "/category/vaporizers?type=parts" }
+    ] 
+  },
+  { 
+    name: "Herb Grinders", 
+    href: "/category/herb-grinders",
+    subItems: [
+      { name: "Metal Grinders", href: "/category/herb-grinders?type=metal" },
+      { name: "Wooden Grinders", href: "/category/herb-grinders?type=wooden" },
+      { name: "Electric Grinders", href: "/category/herb-grinders?type=electric" },
+      { name: "Large Grinders", href: "/category/herb-grinders?type=large" },
+      { name: "Small Grinders", href: "/category/herb-grinders?type=small" }
+    ] 
+  },
+  { 
+    name: "Glass Bubblers", 
+    href: "/category/glass-bubblers",
+    subItems: [
+      { name: "Hammer Bubblers", href: "/category/glass-bubblers?type=hammer" },
+      { name: "Sherlock Bubblers", href: "/category/glass-bubblers?type=sherlock" },
+      { name: "Mini Bubblers", href: "/category/glass-bubblers?type=mini" },
+      { name: "Scientific Bubblers", href: "/category/glass-bubblers?type=scientific" }
+    ] 
+  },
+  { 
+    name: "Smoking Pipes", 
+    href: "/category/smoking-pipes",
+    subItems: [
+      { name: "Glass Pipes", href: "/category/smoking-pipes?type=glass" },
+      { name: "Metal Pipes", href: "/category/smoking-pipes?type=metal" },
+      { name: "Wooden Pipes", href: "/category/smoking-pipes?type=wooden" },
+      { name: "One Hitters", href: "/category/smoking-pipes?type=one-hitter" },
+      { name: "Chillums", href: "/category/smoking-pipes?type=chillum" }
+    ] 
+  },
+  { 
+    name: "Rolling Papers", 
+    href: "/category/rolling-papers",
+    subItems: [
+      { name: "Regular Papers", href: "/category/rolling-papers?type=regular" },
+      { name: "King Size Papers", href: "/category/rolling-papers?type=king-size" },
+      { name: "Flavored Papers", href: "/category/rolling-papers?type=flavored" },
+      { name: "Hemp Papers", href: "/category/rolling-papers?type=hemp" },
+      { name: "Rolling Accessories", href: "/category/rolling-papers?type=accessories" }
+    ] 
+  },
+  { 
+    name: "420 Accessories", 
+    href: "/category/420-accessories",
+    subItems: [
+      { name: "Storage Containers", href: "/category/420-accessories?type=storage" },
+      { name: "Cleaning Supplies", href: "/category/420-accessories?type=cleaning" },
+      { name: "Lighters", href: "/category/420-accessories?type=lighters" },
+      { name: "Ashtrays", href: "/category/420-accessories?type=ashtrays" },
+      { name: "Rolling Trays", href: "/category/420-accessories?type=rolling-trays" }
+    ] 
+  },
+  { 
+    name: "Munchies", 
+    href: "/category/munchies",
+    subItems: [
+      { name: "Snacks", href: "/category/munchies?type=snacks" },
+      { name: "Drinks", href: "/category/munchies?type=drinks" },
+      { name: "Candy", href: "/category/munchies?type=candy" },
+      { name: "Chocolates", href: "/category/munchies?type=chocolates" },
+      { name: "Healthy Options", href: "/category/munchies?type=healthy" }
+    ] 
+  }
+];
+
+const Header = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(null);
-
-  const menuItems = [
-    { 
-      name: "Bongs", 
-      href: "/category/bongs",
-      subItems: [
-        { name: "Glass Bongs", href: "/category/bongs?type=glass" },
-        { name: "Acrylic Bongs", href: "/category/bongs?type=acrylic" },
-        { name: "Mini Bongs", href: "/category/bongs?type=mini" },
-        { name: "Beaker Base Bongs", href: "/category/bongs?type=beaker" },
-        { name: "Straight Tube Bongs", href: "/category/bongs?type=straight" },
-        { name: "Recycler Bongs", href: "/category/bongs?type=recycler" }
-      ] 
-    },
-    { 
-      name: "Dab Rigs", 
-      href: "/category/dab-rigs",
-      subItems: [
-        { name: "Electric Dab Rigs", href: "/category/dab-rigs?type=electric" },
-        { name: "Mini Dab Rigs", href: "/category/dab-rigs?type=mini" },
-        { name: "Recycler Dab Rigs", href: "/category/dab-rigs?type=recycler" },
-        { name: "Scientific Dab Rigs", href: "/category/dab-rigs?type=scientific" },
-        { name: "Dab Tools", href: "/category/dab-rigs?type=tools" }
-      ] 
-    },
-    { 
-      name: "Vaporizers", 
-      href: "/category/vaporizers",
-      subItems: [
-        { name: "Dry Herb Vaporizers", href: "/category/vaporizers?type=dry-herb" },
-        { name: "Wax Vaporizers", href: "/category/vaporizers?type=wax" },
-        { name: "Desktop Vaporizers", href: "/category/vaporizers?type=desktop" },
-        { name: "Portable Vaporizers", href: "/category/vaporizers?type=portable" },
-        { name: "Vaporizer Parts", href: "/category/vaporizers?type=parts" }
-      ] 
-    },
-    { 
-      name: "Herb Grinders", 
-      href: "/category/herb-grinders",
-      subItems: [
-        { name: "Metal Grinders", href: "/category/herb-grinders?type=metal" },
-        { name: "Wooden Grinders", href: "/category/herb-grinders?type=wooden" },
-        { name: "Electric Grinders", href: "/category/herb-grinders?type=electric" },
-        { name: "Large Grinders", href: "/category/herb-grinders?type=large" },
-        { name: "Small Grinders", href: "/category/herb-grinders?type=small" }
-      ] 
-    },
-    { 
-      name: "Glass Bubblers", 
-      href: "/category/glass-bubblers",
-      subItems: [
-        { name: "Hammer Bubblers", href: "/category/glass-bubblers?type=hammer" },
-        { name: "Sherlock Bubblers", href: "/category/glass-bubblers?type=sherlock" },
-        { name: "Mini Bubblers", href: "/category/glass-bubblers?type=mini" },
-        { name: "Scientific Bubblers", href: "/category/glass-bubblers?type=scientific" }
-      ] 
-    },
-    { 
-      name: "Smoking Pipes", 
-      href: "/category/smoking-pipes",
-      subItems: [
-        { name: "Glass Pipes", href: "/category/smoking-pipes?type=glass" },
-        { name: "Metal Pipes", href: "/category/smoking-pipes?type=metal" },
-        { name: "Wooden Pipes", href: "/category/smoking-pipes?type=wooden" },
-        { name: "One Hitters", href: "/category/smoking-pipes?type=one-hitter" },
-        { name: "Chillums", href: "/category/smoking-pipes?type=chillum" }
-      ] 
-    },
-    { 
-      name: "Rolling Papers", 
-      href: "/category/rolling-papers",
-      subItems: [
-        { name: "Regular Papers", href: "/category/rolling-papers?type=regular" },
-        { name: "King Size Papers", href: "/category/rolling-papers?type=king-size" },
-        { name: "Flavored Papers", href: "/category/rolling-papers?type=flavored" },
-        { name: "Hemp Papers", href: "/category/rolling-papers?type=hemp" },
-        { name: "Rolling Accessories", href: "/category/rolling-papers?type=accessories" }
-      ] 
-    },
-    { 
-      name: "420 Accessories", 
-      href: "/category/420-accessories",
-      subItems: [
-        { name: "Storage Containers", href: "/category/420-accessories?type=storage" },
-        { name: "Cleaning Supplies", href: "/category/420-accessories?type=cleaning" },
-        { name: "Lighters", href: "/category/420-accessories?type=lighters" },
-        { name: "Ashtrays", href: "/category/420-accessories?type=ashtrays" },
-        { name: "Rolling Trays", href: "/category/420-accessories?type=rolling-trays" }
-      ] 
-    },
-    { 
-      name: "Munchies", 
-      href: "/category/munchies",
-      subItems: [
-        { name: "Snacks", href: "/category/munchies?type=snacks" },
-        { name: "Drinks", href: "/category/munchies?type=drinks" },
-        { name: "Candy", href: "/category/munchies?type=candy" },
-        { name: "Chocolates", href: "/category/munchies?type=chocolates" },
-        { name: "Healthy Options", href: "/category/munchies?type=healthy" }
-      ] 
-    }
-  ];
 
   return (
     <header className="w-full bg-white border-b border-gray-300 relative z-50">
@@ -311,6 +311,8 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;

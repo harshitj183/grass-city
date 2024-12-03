@@ -4,14 +4,13 @@ import React, { useRef } from "react";
 export default function Topcontainer() {
   return (
     <>
-
-    <br/>
+      <br/>
       <title>Black Friday Sneak Peek</title>
       <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         rel="stylesheet"
       />
-      <div className="max-w-10xl mx-auto items-center  ">
+      <div className="mx-4 md:mx-[200px]">
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 md:grid-cols-8 gap-2">
           {/* First Large Banner */}
@@ -55,8 +54,6 @@ export default function Topcontainer() {
                   src="https://www.grasscity.com/media/wysiwyg/Home_page/2024-11-19---early-black-friday---Brand---302x230.jpg"
                 />
               </div>
-
-              
             </div>
           </div>
         </div>

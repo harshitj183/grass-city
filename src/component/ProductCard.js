@@ -31,14 +31,14 @@ export default function ProductCard({ product }) {
       href={`/product/${productSlug}?id=${product.id}`}
       className="block w-full max-w-[280px]"
     >
-      <div className="border rounded-lg p-3 flex flex-col relative bg-white hover:shadow-lg transition-shadow h-[360px]">
+      <div className="border rounded-lg p-4 flex flex-col relative bg-white hover:shadow-lg transition-shadow">
         <button 
           onClick={toggleWishlist}
-          className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors z-10"
+          className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-gray-100 transition-colors z-10"
           aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart 
-            className={`w-4 h-4 ${
+            className={`w-5 h-5 ${
               isWishlisted 
                 ? 'fill-red-500 text-red-500' 
                 : 'text-gray-400 hover:text-gray-600'
@@ -46,7 +46,7 @@ export default function ProductCard({ product }) {
           />
         </button>
 
-        <div className="relative h-[200px] mb-3 overflow-hidden">
+        <div className="relative h-[200px] mb-4">
           <img
             src={product.image}
             alt={product.name}
@@ -56,32 +56,28 @@ export default function ProductCard({ product }) {
         </div>
 
         <div className="flex flex-col flex-grow">
-          <h3 className="text-sm font-medium line-clamp-2 mb-2 text-gray-800 min-h-[40px]">
+          <div className="flex items-center mb-2">
+            <div className="flex text-yellow-400">
+              {'★'.repeat(5)}
+            </div>
+            <span className="text-sm text-blue-500 ml-1">1 Review</span>
+          </div>
+
+          <h3 className="text-sm font-medium line-clamp-2 mb-3 text-gray-800">
             {product.name}
           </h3>
 
-          <div className="mt-auto space-y-2">
-            <div className="flex flex-col">
+          <div className="mt-auto">
+            <div className="flex items-baseline gap-2">
               {product.originalPrice && (
                 <span className="text-sm text-gray-500 line-through">
-                  USD {product.originalPrice.toFixed(2)}
+                  ${product.originalPrice.toFixed(2)}
                 </span>
               )}
-              <span className={`${product.originalPrice ? 'text-red-500' : 'text-gray-900'} font-semibold`}>
-                USD {product.price.toFixed(2)}
+              <span className={`${product.originalPrice ? 'text-red-500' : 'text-gray-900'} text-lg font-semibold`}>
+                ${product.price.toFixed(2)}
               </span>
             </div>
-
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                // Add to cart logic here
-              }}
-              className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
-              aria-label="Add to cart"
-            >
-              <ShoppingCart className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </div>

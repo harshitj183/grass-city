@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import "./globals.css";
-import PopupProvider from '@/components/PopupProvider';
+import CountryPopup from '@/components/CountryPopup';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -17,7 +18,21 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <PopupProvider />
+        <CountryPopup />
+        <Script id="country-check" strategy="afterInteractive">
+          {`
+            try {
+              if (typeof window !== 'undefined') {
+                window.__COUNTRY_DATA__ = {
+                  language: navigator.language,
+                  languages: navigator.languages || [navigator.language]
+                };
+              }
+            } catch (e) {
+              console.error('Error setting country data:', e);
+            }
+          `}
+        </Script>
       </body>
     </html>
   );

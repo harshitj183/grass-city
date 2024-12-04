@@ -77,46 +77,35 @@ export default function FilterSidebar({
         {expandedSection === 'price' && (
           <div className="px-2">
             <div className="flex items-center justify-between mb-4">
-              <div className="relative">
-                <span className="absolute text-gray-500 left-2 top-2">$</span>
-                <input
-                  type="number"
-                  value={priceRange[0]}
-                  onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                  className="w-24 pl-6 pr-2 py-1 border border-gray-300 rounded text-sm"
-                  min="0"
-                  max={priceRange[1]}
-                />
+              <div className="w-[45%]">
+                <label className="block text-xs text-gray-500 mb-1">Min Price</label>
+                <div className="relative">
+                  <span className="absolute text-gray-500 left-2 top-1/2 -translate-y-1/2 pointer-events-none">$</span>
+                  <input
+                    type="number"
+                    value={priceRange[0]}
+                    onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                    className="w-full pl-6 pr-2 py-1.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent"
+                    min="0"
+                    max={priceRange[1]}
+                  />
+                </div>
               </div>
-              <span className="mx-2 text-gray-400">—</span>
-              <div className="relative">
-                <span className="absolute text-gray-500 left-2 top-2">$</span>
-                <input
-                  type="number"
-                  value={priceRange[1]}
-                  onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                  className="w-24 pl-6 pr-2 py-1 border border-gray-300 rounded text-sm"
-                  min={priceRange[0]}
-                  max="1000"
-                />
+              <div className="w-[45%]">
+                <label className="block text-xs text-gray-500 mb-1">Max Price</label>
+                <div className="relative">
+                  <span className="absolute text-gray-500 left-2 top-1/2 -translate-y-1/2 pointer-events-none">$</span>
+                  <input
+                    type="number"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                    className="w-full pl-6 pr-2 py-1.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent"
+                    min={priceRange[0]}
+                    max="1000"
+                  />
+                </div>
               </div>
             </div>
-            <div className="mb-4">
-              <Slider
-                min={0}
-                max={1000}
-                step={1}
-                value={priceRange}
-                onValueChange={setPriceRange}
-                className="mb-2"
-              />
-            </div>
-            <button
-              onClick={() => setPriceRange([0, 1000])}
-              className="w-full bg-green-600 text-white py-2 px-4 rounded text-sm hover:bg-green-700 transition-colors"
-            >
-              Ok
-            </button>
           </div>
         )}
       </div>

@@ -1,17 +1,18 @@
 "use client";
 
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-
-const CountryPopup = dynamic(() => import('./ClientWrapper'), {
-  suspense: true,
-  ssr: false
-});
+import { useEffect, useState } from 'react';
+import ClientWrapper from './ClientWrapper';
 
 export default function PopupProvider() {
-  return (
-    <Suspense fallback={null}>
-      <CountryPopup />
-    </Suspense>
-  );
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return <ClientWrapper />;
 } 

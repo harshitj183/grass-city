@@ -13,7 +13,7 @@ export default function Recommendedforyou(props) {
             favorite products such as vaporizers, bongs, dab pens, dab rigs, hookahs,
             CBD, and glass pipes or the best prices. We take pride in exploring the
             latest trends so that we can always offer the most popular revolutionary
-            products in the market for the best available price.
+            products in the market for the best available price..
           </p>
           <p className="mb-4">
             With warehouses in <strong>Amsterdam, Las Vegas, and Calgary</strong>, we
